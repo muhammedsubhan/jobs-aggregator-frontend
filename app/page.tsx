@@ -1,48 +1,22 @@
-"use client";
 import React from "react";
-import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import SelectComp from "./MUI/SelectComp";
+import SelectWorkType from "./MUI/SelectWorkType";
+// import Card from "./components/Card";
 
-const SelectComp = () => {
-  const [workplaceType, setWorkplaceType] = React.useState("");
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setWorkplaceType(event.target.value as string);
-    console.log(event.target.value);
-  };
-
+const Home = () => {
   return (
-    <Box sx={{ minWidth: 120 }}>
-      <FormControl fullWidth>
-        <InputLabel id="workplace-type-label" shrink={true}>
-          Workplace Type
-        </InputLabel>
-        <Select
-          labelId="workplace-type-label"
-          id="workplace-type-select"
-          value={workplaceType}
-          label="Workplace Type"
-          onChange={handleChange}
-          displayEmpty
-          sx={{
-            "& .MuiSelect-select": {
-              display: "flex",
-              alignItems: "center",
-            },
-          }}
-        >
-          <MenuItem value="">
-            <em>Select an option</em>
-          </MenuItem>
-          <MenuItem value="On-Site">On-Site</MenuItem>
-          <MenuItem value="Remote">Remote</MenuItem>
-        </Select>
-      </FormControl>
-    </Box>
+    <div className="flex justify-center h-screen border-2 border-red-700">
+      <div className="flex flex-col gap-10 border-2 border-red-500 items-center ">
+        <div>
+          <h1 className="text-4xl font-bold text-green-900">Job Openings</h1>
+        </div>
+        <div className="flex gap-5">
+          <SelectComp />
+          <SelectWorkType />
+        </div>
+      </div>
+    </div>
   );
 };
 
-export default SelectComp;
+export default Home;
