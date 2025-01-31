@@ -6,8 +6,8 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
-const SelectWorkType = () => {
-  const [workType, setWorkType] = React.useState("");
+const SelectLocation = () => {
+  const [location, setLocation] = React.useState("");
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
@@ -15,23 +15,22 @@ const SelectWorkType = () => {
   }, []);
 
   const handleChange = (event: SelectChangeEvent) => {
-    setWorkType(event.target.value as string);
+    setLocation(event.target.value as string);
   };
 
   if (!mounted) return null;
 
   return (
-    <Box sx={{ width: 200 }}>
-      {" "}
+    <Box sx={{ width: 300 }}>
       <FormControl fullWidth>
-        <InputLabel id="work-type-label" shrink>
-          Work Type
+        <InputLabel id="location-label" shrink>
+          Location
         </InputLabel>
         <Select
-          labelId="work-type-label"
-          id="work-type-select"
-          value={workType}
-          label="Work Type"
+          labelId="location-label"
+          id="location-select"
+          value={location}
+          label="Location"
           onChange={handleChange}
           displayEmpty
           sx={{
@@ -44,11 +43,17 @@ const SelectWorkType = () => {
           <MenuItem value="">
             <span style={{ opacity: 0.7 }}>Select an option</span>
           </MenuItem>
-          <MenuItem value="Full Time" style={{ minWidth: "120px" }}>
-            Full Time
+          <MenuItem
+            value="Lahore, punjab, pakistan"
+            style={{ minWidth: "160px" }}
+          >
+            Lahore, punjab, pakistan
           </MenuItem>
-          <MenuItem value="Temporary" style={{ minWidth: "120px" }}>
-            Temporary
+          <MenuItem
+            value="Islamabad, punjab, pakistan"
+            style={{ minWidth: "160px" }}
+          >
+            Islamabad, punjab, pakistan
           </MenuItem>
         </Select>
       </FormControl>
@@ -56,4 +61,4 @@ const SelectWorkType = () => {
   );
 };
 
-export default SelectWorkType;
+export default SelectLocation;

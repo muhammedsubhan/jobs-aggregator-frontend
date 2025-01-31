@@ -6,8 +6,8 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
-const SelectWorkType = () => {
-  const [workType, setWorkType] = React.useState("");
+const SelectCompany = () => {
+  const [company, setCompany] = React.useState("");
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
@@ -15,23 +15,22 @@ const SelectWorkType = () => {
   }, []);
 
   const handleChange = (event: SelectChangeEvent) => {
-    setWorkType(event.target.value as string);
+    setCompany(event.target.value as string);
   };
 
   if (!mounted) return null;
 
   return (
-    <Box sx={{ width: 200 }}>
-      {" "}
+    <Box sx={{ width: 300 }}>
       <FormControl fullWidth>
-        <InputLabel id="work-type-label" shrink>
-          Work Type
+        <InputLabel id="company-label" shrink>
+          Company
         </InputLabel>
         <Select
-          labelId="work-type-label"
-          id="work-type-select"
-          value={workType}
-          label="Work Type"
+          labelId="company-label"
+          id="company-select"
+          value={company}
+          label="Company"
           onChange={handleChange}
           displayEmpty
           sx={{
@@ -44,11 +43,11 @@ const SelectWorkType = () => {
           <MenuItem value="">
             <span style={{ opacity: 0.7 }}>Select an option</span>
           </MenuItem>
-          <MenuItem value="Full Time" style={{ minWidth: "120px" }}>
-            Full Time
+          <MenuItem value="devsinc" style={{ minWidth: "160px" }}>
+            Devsinc Company
           </MenuItem>
-          <MenuItem value="Temporary" style={{ minWidth: "120px" }}>
-            Temporary
+          <MenuItem value="netsol" style={{ minWidth: "160px" }}>
+            NetSol Company
           </MenuItem>
         </Select>
       </FormControl>
@@ -56,4 +55,4 @@ const SelectWorkType = () => {
   );
 };
 
-export default SelectWorkType;
+export default SelectCompany;

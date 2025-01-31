@@ -2,7 +2,7 @@ import React from "react";
 
 const Card = () => {
   return (
-    <div className="bg-white text-white  w-[1000px] min-h-[100px] border-b border-gray-300 pb-3 cursor-pointer">
+    <div className="bg-white text-white  w-[1100px] min-h-[100px] border-b border-gray-300 pb-3 cursor-pointer">
       <div className=" py-5 px-2 flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-2">

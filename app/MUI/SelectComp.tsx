@@ -22,7 +22,7 @@ const SelectComp = () => {
   if (!mounted) return null;
 
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <Box sx={{ width: 200 }}>
       <FormControl fullWidth>
         <InputLabel id="workplace-type-label" shrink>
           Workplace Type
@@ -38,14 +38,20 @@ const SelectComp = () => {
             "& .MuiSelect-select": {
               display: "flex",
               alignItems: "center",
+              minWidth: "120px",
             },
+            width: "100%",
           }}
         >
           <MenuItem value="">
             <span style={{ opacity: 0.7 }}>Select an option</span>
           </MenuItem>
-          <MenuItem value="On-Site">On-Site</MenuItem>
-          <MenuItem value="Remote">Remote</MenuItem>
+          <MenuItem value="On-Site" style={{ minWidth: "120px" }}>
+            On-Site
+          </MenuItem>
+          <MenuItem value="Remote" style={{ minWidth: "120px" }}>
+            Remote
+          </MenuItem>
         </Select>
       </FormControl>
     </Box>
