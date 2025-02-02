@@ -43,17 +43,11 @@ const SelectLocation = () => {
           <MenuItem value="">
             <span style={{ opacity: 0.7 }}>Select an option</span>
           </MenuItem>
-          <MenuItem
-            value="Lahore, punjab, pakistan"
-            style={{ minWidth: "160px" }}
-          >
-            Lahore, punjab, pakistan
+          <MenuItem value="Lahore" style={{ minWidth: "160px" }}>
+            Lahore
           </MenuItem>
-          <MenuItem
-            value="Islamabad, punjab, pakistan"
-            style={{ minWidth: "160px" }}
-          >
-            Islamabad, punjab, pakistan
+          <MenuItem value="Islamabad" style={{ minWidth: "160px" }}>
+            Islamabad
           </MenuItem>
         </Select>
       </FormControl>

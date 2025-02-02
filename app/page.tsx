@@ -28,8 +28,8 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="flex justify-center min-h-screen border-2 border-red-700">
-      <div className="flex flex-col gap-10 border-2 border-red-500 items-center">
+    <div className="flex justify-center min-h-screen ">
+      <div className="flex flex-col gap-10 items-center">
         <div>
           <h1 className="text-4xl font-bold text-green-900">Job Openings</h1>
         </div>
