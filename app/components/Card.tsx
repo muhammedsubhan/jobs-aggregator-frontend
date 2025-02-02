@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-interface Job {
+export interface Job {
   id: string;
   title: string;
   posted: string;

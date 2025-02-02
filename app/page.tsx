@@ -6,17 +6,23 @@ import SelectCompany from "./MUI/SelectCompany";
 import Card from "./components/Card";
 import SelectLocation from "./MUI/SelectLocation";
 import { getAllJobs } from "./utils/JobsAPI/jobsApi";
+import { setJobs } from "./lib/store/features/JobsSlice";
+import { RootState } from "./lib/store/store";
+import { useAppDispatch, useAppSelector } from "./lib/hooks";
 
 const Home = () => {
-  const [jobs, setJobs] = useState({ devsincJobs: [] });
+  const dispatch = useAppDispatch();
+  const jobs = useAppSelector((state: RootState) => state.Jobs.jobs); 
   const [loading, setLoading] = useState(true);
+
+  console.log(jobs);
 
   useEffect(() => {
     const fetchAllJobs = async () => {
       try {
         setLoading(true);
         const res = await getAllJobs();
-        setJobs(res || { devsincJobs: [] });
+        dispatch(setJobs(res || [])); 
       } catch (error) {
         console.error("Error fetching jobs:", error);
       } finally {
@@ -25,8 +31,7 @@ const Home = () => {
     };
 
     fetchAllJobs();
-  }, []);
-
+  }, [dispatch]);
   return (
     <div className="flex justify-center min-h-screen ">
       <div className="flex flex-col gap-10 items-center">
