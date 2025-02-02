@@ -5,17 +5,27 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { Job } from "@/app/components/Card";
+import { useAppDispatch } from "../lib/hooks";
+import { filterJobs } from "../lib/store/features/JobsSlice";
 
-const SelectCompany = () => {
+interface SelectCompanyProps {
+  jobs: Job[];
+}
+
+const SelectCompany: React.FC<SelectCompanyProps> = () => {
   const [company, setCompany] = React.useState("");
   const [mounted, setMounted] = React.useState(false);
+  const dispatch = useAppDispatch();
 
   React.useEffect(() => {
     setMounted(true);
   }, []);
 
   const handleChange = (event: SelectChangeEvent) => {
-    setCompany(event.target.value as string);
+    const selectedCompany = event.target.value as string;
+    setCompany(selectedCompany);
+    dispatch(filterJobs(selectedCompany));
   };
 
   if (!mounted) return null;
@@ -43,10 +53,10 @@ const SelectCompany = () => {
           <MenuItem value="">
             <span style={{ opacity: 0.7 }}>Select an option</span>
           </MenuItem>
-          <MenuItem value="devsinc" style={{ minWidth: "160px" }}>
+          <MenuItem value="Devsinc" style={{ minWidth: "160px" }}>
             Devsinc Company
           </MenuItem>
-          <MenuItem value="netsol" style={{ minWidth: "160px" }}>
+          <MenuItem value="Netsol" style={{ minWidth: "160px" }}>
             NetSol Company
           </MenuItem>
         </Select>

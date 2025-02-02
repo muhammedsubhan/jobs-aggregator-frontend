@@ -9,6 +9,7 @@ export interface Job {
   department: string;
   jobsite: string;
   url: string;
+  postedBy: string;
 }
 
 interface CardProps {

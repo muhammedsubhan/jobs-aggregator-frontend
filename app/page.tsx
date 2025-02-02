@@ -12,7 +12,11 @@ import { useAppDispatch, useAppSelector } from "./lib/hooks";
 
 const Home = () => {
   const dispatch = useAppDispatch();
-  const jobs = useAppSelector((state: RootState) => state.Jobs.jobs); 
+  const jobs = useAppSelector((state: RootState) => state.Jobs.jobs);
+  const filteredJobs = useAppSelector(
+    (state: RootState) => state.Jobs.filteredJobs
+  );
+
   const [loading, setLoading] = useState(true);
 
   console.log(jobs);
@@ -22,7 +26,7 @@ const Home = () => {
       try {
         setLoading(true);
         const res = await getAllJobs();
-        dispatch(setJobs(res || [])); 
+        dispatch(setJobs(res || []));
       } catch (error) {
         console.error("Error fetching jobs:", error);
       } finally {
@@ -41,7 +45,7 @@ const Home = () => {
         <div className="flex gap-8">
           <SelectComp />
           <SelectWorkType />
-          <SelectCompany />
+          <SelectCompany jobs={jobs} />
           <SelectLocation />
         </div>
         <div>
@@ -50,7 +54,7 @@ const Home = () => {
               Scraping jobs, please wait...
             </p>
           ) : (
-            jobs?.map((job, index) => (
+            filteredJobs?.map((job, index) => (
               <div key={job?.id || index}>
                 <Card job={job} />
               </div>
