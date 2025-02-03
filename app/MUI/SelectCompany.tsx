@@ -15,25 +15,22 @@ interface SelectCompanyProps {
 
 const SelectCompany: React.FC<SelectCompanyProps> = () => {
   const [company, setCompany] = React.useState("");
-  const [mounted, setMounted] = React.useState(false);
   const dispatch = useAppDispatch();
 
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
-
   const handleChange = (event: SelectChangeEvent) => {
-    const selectedCompany = event.target.value as string;
-    setCompany(selectedCompany);
-    dispatch(
-      filterJobs({
-        company: selectedCompany,
-        workType: "",
-      })
-    );
+    setCompany(event.target.value as string);
   };
 
-  if (!mounted) return null;
+  React.useEffect(() => {
+    dispatch(
+      filterJobs({
+        company: company,
+        workType: "",
+        workplaceType: "",
+        location: "",
+      })
+    );
+  }, [company, dispatch]);
 
   return (
     <Box sx={{ width: 300 }}>

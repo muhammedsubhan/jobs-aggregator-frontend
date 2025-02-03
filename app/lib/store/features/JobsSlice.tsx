@@ -21,26 +21,30 @@ export const JobsSlice = createSlice({
     },
     filterJobs: (
       state,
-      action: PayloadAction<{ company: string; workType: string }>
+      action: PayloadAction<{
+        company?: string;
+        workType?: string;
+        workplaceType?: string;
+        location?: string;
+      }>
     ) => {
-      const { company, workType } = action.payload;
-      console.log("company", company);
-      console.log("workType", workType);
-      if (company) {
-        state.filteredJobs = state.jobs.filter(
-          (job) => job.postedBy === company
+      const { company, workType, workplaceType, location } = action.payload;
+
+      state.filteredJobs = state.jobs.filter((job) => {
+        return (
+          (!company || job.postedBy === company) &&
+          (!workType || job.jobsite === workType) &&
+          (!workplaceType || job.jobType === workplaceType) &&
+          (!location || job.location.split(",")[0].trim() === location)
         );
-      } else if (workType) {
-        state.filteredJobs = state.jobs.filter(
-          (job) => job.jobsite === workType
-        );
-      } else {
-        state.filteredJobs = state.jobs;
-      }
+      });
+    },
+    resetFilters: (state) => {
+      state.filteredJobs = state.jobs;
     },
   },
 });
 
-export const { setJobs, filterJobs } = JobsSlice.actions;
+export const { setJobs, filterJobs, resetFilters } = JobsSlice.actions;
 
 export default JobsSlice.reducer;

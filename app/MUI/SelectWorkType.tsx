@@ -8,34 +8,32 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { filterJobs } from "../lib/store/features/JobsSlice";
 import { useAppDispatch } from "../lib/hooks";
 import { Job } from "../components/Card";
+
 interface SelectWorkTypeProps {
   jobs: Job[];
 }
 
 const SelectWorkType: React.FC<SelectWorkTypeProps> = () => {
   const [workType, setWorkType] = React.useState("");
-  const [mounted, setMounted] = React.useState(false);
   const dispatch = useAppDispatch();
-
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const handleChange = (event: SelectChangeEvent) => {
     setWorkType(event.target.value as string);
-    dispatch(
-      filterJobs({
-        workType: event.target.value,
-        company: "",
-      })
-    );
   };
 
-  if (!mounted) return null;
+  React.useEffect(() => {
+    dispatch(
+      filterJobs({
+        workType: workType,
+        company: "",
+        workplaceType: "",
+        location: "",
+      })
+    );
+  }, [workType, dispatch]);
 
   return (
     <Box sx={{ width: 200 }}>
-      {" "}
       <FormControl fullWidth>
         <InputLabel id="work-type-label" shrink>
           Work Type

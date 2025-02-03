@@ -43,10 +43,10 @@ const Home = () => {
           <h1 className="text-4xl font-bold text-green-900">Job Openings</h1>
         </div>
         <div className="flex gap-8">
-          <SelectComp />
+          <SelectComp jobs={jobs} />
           <SelectWorkType jobs={jobs} />
           <SelectCompany jobs={jobs} />
-          <SelectLocation />
+          <SelectLocation jobs={jobs}/>
         </div>
         <div>
           {loading ? (

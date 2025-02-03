@@ -5,20 +5,32 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { Job } from "../components/Card";
+import { useAppDispatch } from "../lib/hooks";
+import { filterJobs } from "../lib/store/features/JobsSlice";
 
-const SelectLocation = () => {
+interface SelectLocationProps {
+  jobs: Job[];
+}
+
+const SelectLocation: React.FC<SelectLocationProps> = () => {
   const [location, setLocation] = React.useState("");
-  const [mounted, setMounted] = React.useState(false);
-
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
+  const dispatch = useAppDispatch();
 
   const handleChange = (event: SelectChangeEvent) => {
     setLocation(event.target.value as string);
   };
 
-  if (!mounted) return null;
+  React.useEffect(() => {
+    dispatch(
+      filterJobs({
+        company: "",
+        workType: "",
+        workplaceType: "",
+        location: location,
+      })
+    );
+  }, [location, dispatch]);
 
   return (
     <Box sx={{ width: 300 }}>
