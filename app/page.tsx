@@ -1,12 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import SelectComp from "./MUI/SelectComp";
 import SelectWorkType from "./MUI/SelectWorkType";
 import SelectCompany from "./MUI/SelectCompany";
 import Card from "./components/Card";
 import SelectLocation from "./MUI/SelectLocation";
-import { getAllJobs } from "./utils/JobsAPI/jobsApi";
-import { setJobs } from "./lib/store/features/JobsSlice";
+import { useGetAllJobsQuery } from "./utils/JobsAPI/jobsApi";
+import { filterJobs, setJobs } from "./lib/store/features/JobsSlice";
 import { RootState } from "./lib/store/store";
 import { useAppDispatch, useAppSelector } from "./lib/hooks";
 
@@ -17,39 +17,36 @@ const Home = () => {
     (state: RootState) => state.Jobs.filteredJobs
   );
 
-  const [loading, setLoading] = useState(true);
+  const { data, error, isLoading } = useGetAllJobsQuery({});
 
-  console.log(jobs);
+  console.log(error);
 
   useEffect(() => {
-    const fetchAllJobs = async () => {
-      try {
-        setLoading(true);
-        const res = await getAllJobs();
-        dispatch(setJobs(res || []));
-      } catch (error) {
-        console.error("Error fetching jobs:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (data) {
+      dispatch(setJobs(data));
+    }
+  }, [dispatch, data]);
 
-    fetchAllJobs();
-  }, [dispatch]);
+  const handleFilterUpdate = (
+    filterType: string,
+    value: string | undefined
+  ) => {
+    dispatch(filterJobs({ [filterType]: value }));
+  };
   return (
-    <div className="flex justify-center min-h-screen ">
+    <div className="flex justify-center min-h-screen py-10">
       <div className="flex flex-col gap-10 items-center">
         <div>
           <h1 className="text-4xl font-bold text-green-900">Job Openings</h1>
         </div>
         <div className="flex gap-8">
-          <SelectComp jobs={jobs} />
-          <SelectWorkType jobs={jobs} />
-          <SelectCompany jobs={jobs} />
-          <SelectLocation jobs={jobs}/>
+        <SelectComp jobs={jobs} onFilterChange={(value) => handleFilterUpdate("workplaceType", value)} />
+          <SelectWorkType jobs={jobs} onFilterChange={(value) => handleFilterUpdate("workType", value)} />
+          <SelectCompany jobs={jobs} onFilterChange={(value) => handleFilterUpdate("company", value)} />
+          <SelectLocation jobs={jobs} onFilterChange={(value) => handleFilterUpdate("location", value)} />
         </div>
         <div>
-          {loading ? (
+          {isLoading ? (
             <p className="text-xl text-gray-700 font-medium flex items-center justify-center h-screen">
               Scraping jobs, please wait...
             </p>

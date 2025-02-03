@@ -11,26 +11,22 @@ import { filterJobs } from "../lib/store/features/JobsSlice";
 
 interface SelectLocationProps {
   jobs: Job[];
+  onFilterChange: (value: string | undefined) => void;
 }
 
-const SelectLocation: React.FC<SelectLocationProps> = () => {
+const SelectLocation: React.FC<SelectLocationProps> = ({
+  jobs,
+  onFilterChange,
+}) => {
   const [location, setLocation] = React.useState("");
   const dispatch = useAppDispatch();
 
   const handleChange = (event: SelectChangeEvent) => {
-    setLocation(event.target.value as string);
+    const selectedLocation = event.target.value as string;
+    setLocation(selectedLocation);
+    dispatch(filterJobs({ location: selectedLocation }));
+    onFilterChange(selectedLocation);
   };
-
-  React.useEffect(() => {
-    dispatch(
-      filterJobs({
-        company: "",
-        workType: "",
-        workplaceType: "",
-        location: location,
-      })
-    );
-  }, [location, dispatch]);
 
   return (
     <Box sx={{ width: 300 }}>
@@ -49,18 +45,37 @@ const SelectLocation: React.FC<SelectLocationProps> = () => {
             width: "100%",
             "& .MuiSelect-select": {
               minWidth: "120px",
+              height: "10px",
+              padding: "12px 14px",
+            },
+            "& .MuiOutlinedInput-root": {
+              borderRadius: "4px",
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "none",
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "none",
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "none",
+              },
             },
           }}
         >
           <MenuItem value="">
             <span style={{ opacity: 0.7 }}>Select an option</span>
           </MenuItem>
-          <MenuItem value="Lahore" style={{ minWidth: "160px" }}>
-            Lahore
-          </MenuItem>
-          <MenuItem value="Islamabad" style={{ minWidth: "160px" }}>
-            Islamabad
-          </MenuItem>
+          {[
+            ...new Set(jobs.map((job) => job.location.split(",")[0].trim())),
+          ].map((location) => (
+            <MenuItem
+              key={location}
+              value={location}
+              style={{ minWidth: "160px" }}
+            >
+              {location}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
     </Box>

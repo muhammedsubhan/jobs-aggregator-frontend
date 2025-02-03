@@ -11,26 +11,30 @@ import { Job } from "../components/Card";
 
 interface SelectWorkTypeProps {
   jobs: Job[];
+  onFilterChange: (value: string | undefined) => void;
 }
 
-const SelectWorkType: React.FC<SelectWorkTypeProps> = () => {
+const SelectWorkType: React.FC<SelectWorkTypeProps> = ({
+  jobs,
+  onFilterChange,
+}) => {
   const [workType, setWorkType] = React.useState("");
   const dispatch = useAppDispatch();
 
   const handleChange = (event: SelectChangeEvent) => {
-    setWorkType(event.target.value as string);
+    const selectedWorkType = event.target.value as string;
+    setWorkType(selectedWorkType ?? ""); 
+    dispatch(filterJobs({ workType: selectedWorkType }));
+    onFilterChange(selectedWorkType);
   };
 
-  React.useEffect(() => {
-    dispatch(
-      filterJobs({
-        workType: workType,
-        company: "",
-        workplaceType: "",
-        location: "",
-      })
-    );
-  }, [workType, dispatch]);
+  const workTypeOptions = [
+    ...new Set(
+      jobs
+        .map((job) => job.jobsite) 
+        .filter((type): type is string => !!type) 
+    ),
+  ];
 
   return (
     <Box sx={{ width: 200 }}>
@@ -49,18 +53,31 @@ const SelectWorkType: React.FC<SelectWorkTypeProps> = () => {
             width: "100%",
             "& .MuiSelect-select": {
               minWidth: "120px",
+              height: "10px",
+              padding: "12px 14px",
+            },
+            "& .MuiOutlinedInput-root": {
+              borderRadius: "4px",
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "none",
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "none",
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "none",
+              },
             },
           }}
         >
           <MenuItem value="">
             <span style={{ opacity: 0.7 }}>Select an option</span>
           </MenuItem>
-          <MenuItem value="Full time" style={{ minWidth: "120px" }}>
-            Full Time
-          </MenuItem>
-          <MenuItem value="Temporary" style={{ minWidth: "120px" }}>
-            Temporary
-          </MenuItem>
+          {workTypeOptions.map((type, index) => (
+            <MenuItem key={index} value={type} style={{ minWidth: "120px" }}>
+              {type}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
     </Box>

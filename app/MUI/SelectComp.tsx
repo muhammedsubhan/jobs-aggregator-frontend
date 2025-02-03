@@ -11,26 +11,28 @@ import { filterJobs } from "../lib/store/features/JobsSlice";
 
 interface SelectWorkPlaceProps {
   jobs: Job[];
+  onFilterChange: (value: string | undefined) => void;
 }
 
-const SelectComp: React.FC<SelectWorkPlaceProps> = () => {
+const SelectComp: React.FC<SelectWorkPlaceProps> = ({
+  jobs,
+  onFilterChange,
+}) => {
   const [workplaceType, setWorkplaceType] = React.useState("");
   const dispatch = useAppDispatch();
 
   const handleChange = (event: SelectChangeEvent) => {
-    setWorkplaceType(event.target.value as string);
+    const selectedWorkplaceType = event.target.value as string;
+    setWorkplaceType(selectedWorkplaceType ?? "");
+    dispatch(filterJobs({ workplaceType: selectedWorkplaceType }));
+    onFilterChange(selectedWorkplaceType);
   };
 
-  React.useEffect(() => {
-    dispatch(
-      filterJobs({
-        company: "",
-        workType: "",
-        workplaceType: workplaceType,
-        location: "",
-      })
-    );
-  }, [workplaceType, dispatch]);
+  const workplaceOptions = [
+    ...new Set(
+      jobs.map((job) => job.jobType).filter((type): type is string => !!type)
+    ),
+  ];
 
   return (
     <Box sx={{ width: 200 }}>
@@ -46,23 +48,34 @@ const SelectComp: React.FC<SelectWorkPlaceProps> = () => {
           onChange={handleChange}
           displayEmpty
           sx={{
-            "& .MuiSelect-select": {
-              display: "flex",
-              alignItems: "center",
-              minWidth: "120px",
-            },
             width: "100%",
+            "& .MuiSelect-select": {
+              minWidth: "120px",
+              height: "10px",
+              padding: "12px 14px",
+            },
+            "& .MuiOutlinedInput-root": {
+              borderRadius: "4px",
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "none",
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "none",
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "none",
+              },
+            },
           }}
         >
           <MenuItem value="">
             <span style={{ opacity: 0.7 }}>Select an option</span>
           </MenuItem>
-          <MenuItem value="On-site" style={{ minWidth: "120px" }}>
-            On-Site
-          </MenuItem>
-          <MenuItem value="Remote" style={{ minWidth: "120px" }}>
-            Remote
-          </MenuItem>
+          {workplaceOptions.map((type, index) => (
+            <MenuItem key={index} value={type} style={{ minWidth: "120px" }}>
+              {type}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
     </Box>

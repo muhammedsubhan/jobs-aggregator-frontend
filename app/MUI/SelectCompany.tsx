@@ -11,26 +11,22 @@ import { filterJobs } from "../lib/store/features/JobsSlice";
 
 interface SelectCompanyProps {
   jobs: Job[];
+  onFilterChange: (value: string | undefined) => void;
 }
 
-const SelectCompany: React.FC<SelectCompanyProps> = () => {
+const SelectCompany: React.FC<SelectCompanyProps> = ({
+  jobs,
+  onFilterChange,
+}) => {
   const [company, setCompany] = React.useState("");
   const dispatch = useAppDispatch();
 
   const handleChange = (event: SelectChangeEvent) => {
-    setCompany(event.target.value as string);
+    const selectedCompany = event.target.value as string;
+    setCompany(selectedCompany);
+    dispatch(filterJobs({ company: selectedCompany })); 
+    onFilterChange(selectedCompany); 
   };
-
-  React.useEffect(() => {
-    dispatch(
-      filterJobs({
-        company: company,
-        workType: "",
-        workplaceType: "",
-        location: "",
-      })
-    );
-  }, [company, dispatch]);
 
   return (
     <Box sx={{ width: 300 }}>
@@ -49,18 +45,35 @@ const SelectCompany: React.FC<SelectCompanyProps> = () => {
             width: "100%",
             "& .MuiSelect-select": {
               minWidth: "120px",
+              height: "10px",
+              padding: "12px 14px",
+            },
+            "& .MuiOutlinedInput-root": {
+              borderRadius: "4px",
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "none",
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "none",
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "none",
+              },
             },
           }}
         >
           <MenuItem value="">
             <span style={{ opacity: 0.7 }}>Select an option</span>
           </MenuItem>
-          <MenuItem value="Devsinc" style={{ minWidth: "160px" }}>
-            Devsinc Company
-          </MenuItem>
-          <MenuItem value="Netsol" style={{ minWidth: "160px" }}>
-            NetSol Company
-          </MenuItem>
+          {[...new Set(jobs.map((job) => job.postedBy))].map((company) => (
+            <MenuItem
+              key={company}
+              value={company}
+              style={{ minWidth: "160px" }}
+            >
+              {company}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
     </Box>
