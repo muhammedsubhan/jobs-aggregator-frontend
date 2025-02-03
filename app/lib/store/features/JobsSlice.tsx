@@ -19,11 +19,20 @@ export const JobsSlice = createSlice({
       state.jobs = action.payload;
       state.filteredJobs = action.payload;
     },
-    filterJobs: (state, action: PayloadAction<string>) => {
-      const company = action.payload;
+    filterJobs: (
+      state,
+      action: PayloadAction<{ company: string; workType: string }>
+    ) => {
+      const { company, workType } = action.payload;
+      console.log("company", company);
+      console.log("workType", workType);
       if (company) {
         state.filteredJobs = state.jobs.filter(
           (job) => job.postedBy === company
+        );
+      } else if (workType) {
+        state.filteredJobs = state.jobs.filter(
+          (job) => job.jobsite === workType
         );
       } else {
         state.filteredJobs = state.jobs;

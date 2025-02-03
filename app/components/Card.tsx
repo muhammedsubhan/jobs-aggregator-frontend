@@ -5,9 +5,9 @@ export interface Job {
   title: string;
   posted: string;
   location: string;
-  jobType: string;
+  jobType?: string;
   department: string;
-  jobsite: string;
+  jobsite?: string;
   url: string;
   postedBy: string;
 }

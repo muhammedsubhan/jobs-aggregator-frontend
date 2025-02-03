@@ -25,7 +25,12 @@ const SelectCompany: React.FC<SelectCompanyProps> = () => {
   const handleChange = (event: SelectChangeEvent) => {
     const selectedCompany = event.target.value as string;
     setCompany(selectedCompany);
-    dispatch(filterJobs(selectedCompany));
+    dispatch(
+      filterJobs({
+        company: selectedCompany,
+        workType: "",
+      })
+    );
   };
 
   if (!mounted) return null;

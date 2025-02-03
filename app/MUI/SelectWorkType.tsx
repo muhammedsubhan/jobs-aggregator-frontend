@@ -5,10 +5,17 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { filterJobs } from "../lib/store/features/JobsSlice";
+import { useAppDispatch } from "../lib/hooks";
+import { Job } from "../components/Card";
+interface SelectWorkTypeProps {
+  jobs: Job[];
+}
 
-const SelectWorkType = () => {
+const SelectWorkType: React.FC<SelectWorkTypeProps> = () => {
   const [workType, setWorkType] = React.useState("");
   const [mounted, setMounted] = React.useState(false);
+  const dispatch = useAppDispatch();
 
   React.useEffect(() => {
     setMounted(true);
@@ -16,6 +23,12 @@ const SelectWorkType = () => {
 
   const handleChange = (event: SelectChangeEvent) => {
     setWorkType(event.target.value as string);
+    dispatch(
+      filterJobs({
+        workType: event.target.value,
+        company: "",
+      })
+    );
   };
 
   if (!mounted) return null;
@@ -44,7 +57,7 @@ const SelectWorkType = () => {
           <MenuItem value="">
             <span style={{ opacity: 0.7 }}>Select an option</span>
           </MenuItem>
-          <MenuItem value="Full Time" style={{ minWidth: "120px" }}>
+          <MenuItem value="Full time" style={{ minWidth: "120px" }}>
             Full Time
           </MenuItem>
           <MenuItem value="Temporary" style={{ minWidth: "120px" }}>

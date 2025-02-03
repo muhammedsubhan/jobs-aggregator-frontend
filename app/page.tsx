@@ -44,7 +44,7 @@ const Home = () => {
         </div>
         <div className="flex gap-8">
           <SelectComp />
-          <SelectWorkType />
+          <SelectWorkType jobs={jobs} />
           <SelectCompany jobs={jobs} />
           <SelectLocation />
         </div>
